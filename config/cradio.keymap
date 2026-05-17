@@ -7,6 +7,7 @@
 
 #define KRIT 0
 #define BLND 1
+#define DESEL &kp LC(LS(LA(LALT)))
 
 / {
     behaviors {
@@ -43,11 +44,11 @@
             display-name = "Krita";
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-            &trans     &trans     &trans     &trans     &trans         &kp KP_N7  &kp KP_N8  &td_toggle &kp KP_N9  &kp KP_PLUS
+            &trans     &trans     &trans     &trans     &trans         DESEL      &kp KP_N8  &td_toggle &kp KP_N9  &kp KP_PLUS
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-            &trans     &trans     &trans     &trans     &trans         &kp KP_N4  &kp KP_N5  &kp KP_N6  &kp KP_MINUS &kp LBKT
+            &trans     &trans     &trans     &trans     &trans         &kp KP_N7  &kp LC(T)  &kp KP_N6  &kp B      &kp LC(LS(Z)) 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-            &trans     &trans     &trans     &trans     &trans         &kp LCTRL  &kp LSHFT  &kp KP_N1  &kp KP_N2  &kp KP_N3
+            &trans     &trans     &trans     &trans     &trans         &kp B      &kp E      &kp SLASH  &kp KP_N2  &kp LC(Z) 
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
                                              &trans     &trans         &kp LCTRL  &kp LSHFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
