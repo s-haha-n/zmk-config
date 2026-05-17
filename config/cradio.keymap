@@ -5,121 +5,82 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
-// Home row mods macro
-#define HRML(k1,k2,k3,k4) &ht LSHFT k1  &ht LALT k2  &ht LCTRL k3  &ht LGUI k4
-#define HRMR(k1,k2,k3,k4) &ht RGUI k1  &ht RCTRL k2  &ht RALT k3  &ht RSHFT k4
+#define KRIT 0
+#define BLND 1
 
 / {
     behaviors {
-        ht: hold_tap {
-            compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <2>;
-            flavor = "tap-preferred";
-            tapping-term-ms = <220>;
-            quick-tap-ms = <150>;
-            require-prior-idle-ms = <100>;
-            bindings = <&kp>, <&kp>;
-        };
-    };
-
-    conditional_layers {
-        compatible = "zmk,conditional-layers";
-        tri_layer {
-            if-layers = <1 2>;
-            then-layer = <3>;
+        // Double-tap I to toggle between Krita and Blender layers
+        td_toggle: tap_dance_toggle {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp I>, <&tog BLND>;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
-        default_layer {
-            display-name = "Default Layer";
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│  Q       │  W       │  E       │  R       │  T       │   │  Y       │  U       │  I       │  O       │  P       │
-            &kp Q      &kp W      &kp E      &kp R      &kp T          &kp Y      &kp U      &kp I      &kp O      &kp P
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  A       │  S       │  D       │  F       │  G       │   │  H       │  J       │  K       │  L       │ ' "      │
-            HRML(A,        S,         D,         F)     &kp G          &kp H      HRMR(J,        K,         L,        SQT)
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  Z       │  X       │  C       │  V       │  B       │   │  N       │  M       │ , <      │ . >      │ / ?      │
-            &kp Z      &kp X      &kp C      &kp V      &kp B          &kp N      &kp M      &kp COMMA  &kp DOT    &kp FSLH
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &lt 2 TAB  &tog 4         &kp SPACE  &lt 1 BSPC
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
 
-        right_layer {
-            display-name = "Right Layer";
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ INSERT   │  1       │  2       │  3       │          │   │ HOME     │ PAGE DN  │ PAGE UP  │ END      │  :       │
-            &kp INS    &kp N1     &kp N2     &kp N3     &trans         &kp HOME   &kp PG_DN  &kp PG_UP  &kp END    &kp COLON
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ DELETE   │  4       │  5       │  6       │          │   │ LEFT     │ DOWN     │ UP       │ RIGHT    │  ;       │
-            &kp DEL    &kp N4     &kp N5     &kp N6     &trans         &kp LEFT   &kp DOWN   &kp UP   &kp RIGHT   &kp SEMI
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│ CAPS     │  7       │  8       │  9       │  0       │   │          │          │          │          │          │
-           &caps_word  &kp N7     &kp N8     &kp N9     &kp N0         &trans     &trans     &trans     &trans     &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &kp ESC        &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
-
-        left_layer {
-            display-name = "Left Layer";
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │  [       │  {       │  }       │          │   │  ^       │  (       │  )       │  ]       │  ~       │
-            &trans     &kp LBKT   &kp LBRC   &kp RBRC   &bt BT_CLR     &kp CARET  &kp LPAR   &kp RPAR   &kp RBKT   &kp TILDE
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│  !       │  @       │  #       │  $       │  %       │   │  *       │  -       │  =       │  \       │  `       │
-            &kp EXCL   &kp AT     &kp HASH   &kp DLLR   &kp PRCNT      &kp ASTRK  &kp MINUS  &kp EQUAL  &kp BSLH   &kp GRAVE
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │  &       │  _       │  +       │  │       │          │
-            &trans     &trans     &trans     &trans    &bootloader     &kp AMPS   &kp UNDER  &kp PLUS   &kp PIPE   &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
-
-        tri_layer {
-            display-name = "Tri Layer";
-            bindings = <
-        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│ RESET    │          │          │          │PROFILE 0 │   │          │          │          │          │  RESET   │
-           &sys_reset  &trans     &trans     &trans    &bt BT_SEL 0    &trans     &trans     &trans     &trans    &sys_reset
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│BOOTLOADER│          │          │          │PROFILE 1 │   │          │          │          │          │BOOTLOADER│
-          &bootloader  &trans     &trans     &trans    &bt BT_SEL 1    &trans     &trans     &trans     &trans    &bootloader
-        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │ CLEAR BT │PROFILE 2 │   │          │          │          │          │          │
-            &trans     &trans     &trans    &bt BT_CLR &bt BT_SEL 2    &trans     &trans     &trans     &trans     &trans
-        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &trans     &trans
-        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-            >;
-        };
-
+        // ─────────────────────────────────────────────────────
+        // KRITA LAYER (default)
+        //
+        // Right half layout:
+        //
+        //   [left half = all trans]    KP7   KP8   I(dbl)  KP9   KP+
+        //   [left half = all trans]    KP4   KP5   KP6     KP-   [
+        //   [left half = all trans]    CTRL  SHFT  KP1     KP2   KP3
+        //                  [trans]  [trans]  CTRL  SHFT
+        //
+        // Krita numpad reference:
+        //   KP7/8/9 = rotate canvas L / reset / rotate R
+        //   KP4/5/6 = free (assign in Krita settings)
+        //   KP1/2/3 = free
+        //   KP+ / KP- = brush size up / down
+        //   [ / ]    = brush size down / up (Krita default keys)
+        // ─────────────────────────────────────────────────────
         krita_layer {
-            display-name = "Krita RH Layer";
+            display-name = "Krita";
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-        //│          │          │          │          │          │   │   LINE   │ SETTINGS │          │          │          │
-            &trans     &trans     &trans     &trans     &trans         &kp HOME   &kp F5     &kp N8     &kp N7     &kp PLUS
+            &trans     &trans     &trans     &trans     &trans         &kp KP_N7  &kp KP_N8  &td_toggle &kp KP_N9  &kp KP_PLUS
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │          │  BRUSH   │          │          │          │
-            &trans     &trans     &trans     &trans     &trans         &kp ASTRK  &kp N1     &kp N2     &kp FSLH   &kp MINUS
+            &trans     &trans     &trans     &trans     &trans         &kp KP_N4  &kp KP_N5  &kp KP_N6  &kp KP_MINUS &kp LBKT
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
-        //│          │          │          │          │          │   │          │ ROTATE L │  CENTER  │ ROTATE R │FLIPCANVAS│
-            &trans     &trans     &trans     &trans      &trans        &kp N9     &kp N4     &kp N5     &kp N6     &kp N3
+            &trans     &trans     &trans     &trans     &trans         &kp LCTRL  &kp LSHFT  &kp KP_N1  &kp KP_N2  &kp KP_N3
         //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
-                                             &trans     &trans         &kp PG_DN  &kp PG_UP
+                                             &trans     &trans         &kp LCTRL  &kp LSHFT
         //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
-        //                                                               UNDO       REDO
+            >;
+        };
+
+        // ─────────────────────────────────────────────────────
+        // BLENDER LAYER (double-tap I to toggle, again to return)
+        //
+        //   KP7=top    KP8=rot↑   I(dbl)=exit  KP9=opposite  Z=xray
+        //   KP4=rot←   KP5=persp  KP6=rot→     KP-=zoom out  Tab=edit mode
+        //   CTRL       SHFT       KP1=front     KP2=rot↓      KP3=right
+        //                         CTRL          SHFT
+        //
+        // Blender numpad reference:
+        //   KP1=front  KP3=right  KP7=top
+        //   KP2/4/6/8 = rotate view
+        //   KP5 = toggle ortho/perspective
+        //   KP9 = opposite view
+        //   KP+ / KP- = zoom in / out
+        // ─────────────────────────────────────────────────────
+        blender_layer {
+            display-name = "Blender";
+            bindings = <
+        //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
+            &trans     &trans     &trans     &trans     &trans         &kp KP_N7  &kp KP_N8  &td_toggle &kp KP_N9  &kp Z
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &trans     &trans     &trans     &trans     &trans         &kp KP_N4  &kp KP_N5  &kp KP_N6  &kp KP_PLUS &kp TAB
+        //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
+            &trans     &trans     &trans     &trans     &trans         &kp LCTRL  &kp LSHFT  &kp KP_N1  &kp KP_N2  &kp KP_N3
+        //╰──────────┴──────────┴──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────╯
+                                             &trans     &trans         &kp LCTRL  &kp LSHFT
+        //                                 ╰──────────┴──────────╯   ╰──────────┴──────────╯
             >;
         };
     };
