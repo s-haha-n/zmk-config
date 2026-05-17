@@ -7,7 +7,7 @@
 
 #define KRIT 0
 #define BLND 1
-#define DESEL &kp LC(LS(LA(LALT)))
+#define DESEL &kp LC(LS(A))
 
 / {
     behaviors {
@@ -23,28 +23,11 @@
     keymap {
         compatible = "zmk,keymap";
 
-        // ─────────────────────────────────────────────────────
-        // KRITA LAYER (default)
-        //
-        // Right half layout:
-        //
-        //   [left half = all trans]    KP7   KP8   I(dbl)  KP9   KP+
-        //   [left half = all trans]    KP4   KP5   KP6     KP-   [
-        //   [left half = all trans]    CTRL  SHFT  KP1     KP2   KP3
-        //                  [trans]  [trans]  CTRL  SHFT
-        //
-        // Krita numpad reference:
-        //   KP7/8/9 = rotate canvas L / reset / rotate R
-        //   KP4/5/6 = free (assign in Krita settings)
-        //   KP1/2/3 = free
-        //   KP+ / KP- = brush size up / down
-        //   [ / ]    = brush size down / up (Krita default keys)
-        // ─────────────────────────────────────────────────────
         krita_layer {
             display-name = "Krita";
             bindings = <
         //╭──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────╮
-            &trans     &trans     &trans     &trans     &trans         DESEL      &kp KP_N8  &td_toggle &kp KP_N9  &kp KP_PLUS
+            &trans     &trans     &trans     &trans     &trans         DESEL      &kp DEL    &td_toggle &kp KP_N9  &kp KP_PLUS
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
             &trans     &trans     &trans     &trans     &trans         &kp KP_N7  &kp LC(T)  &kp KP_N6  &kp B      &kp LC(LS(Z)) 
         //├──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┤
